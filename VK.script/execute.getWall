@@ -1,0 +1,4 @@
+var wall= API.wall.get({"owner_id":Args.gid, "count":100, "offset":0,
+" extended":0});
+
+return wall;

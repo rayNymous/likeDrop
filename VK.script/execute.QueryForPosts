@@ -1,0 +1,40 @@
+var OUT=[];
+var COUNT=Args.count;
+var GID=Args.gid;
+
+
+var wall= API.wall.get({"owner_id":Args.gid, "count":COUNT, "offset":0,
+" extended":0});
+
+//return wall;
+
+var items=wall.items;
+var tmpOut=[];
+tmpOut.push(items@.id);
+//tmpOut.push(items@.text);
+tmpOut.push(items@.comments@.count);
+OUT.push(tmpOut);
+if(items.length < COUNT)
+    return OUT;
+
+var i= 1;
+    while(i<25)
+    {
+
+        var wall= API.wall.get({"owner_id":Args.gid, "count":COUNT,
+            "offset": COUNT * i," extended":0});
+
+        var items=wall.items;
+        var tmpOut=[];
+        tmpOut.push(items@.id);
+//        tmpOut.push(items@.text);
+        tmpOut.push(items@.comments@.count);
+        OUT.push(tmpOut);
+
+        if(items.length < COUNT)
+            return OUT;
+
+        i=i+1;
+    }
+
+return OUT;

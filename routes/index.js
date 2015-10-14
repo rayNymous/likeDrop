@@ -143,7 +143,7 @@ function vkRequest()
   intervalID=setTimeout(vkRequest,config.timerValue);
 }
 
-//get [[post_id][post_comment_count]], and push it to checlList
+//get [[post_id][post_comment_count]] from response, and push it to checkList
 function QueryForPosts()
 {
   vk.request('execute.QueryForPosts',
@@ -178,35 +178,23 @@ function QueryForPosts()
                   }
               })
 
-              if(config.isDebugEnabled==1)
-              console.log("checkPostList :"+checkList.toString());
+              if(config.isDebugEnabled==1)console.log("checkPostList :"+checkList.toString());
           }
       }
   )
 }
 
+//удаляем пачкой посты из DropList содержащие ссылки
 function QueryForDropThatStuff()
 {
   if (dropList.length == 0 || params.dropLinks==0)
     return;
 
-/*  var commentOffset = 0;
-
-  if (dropList.length - drop_offset <= 25) {
-    commentOffset = drop_offset;
-    drop_offset = 0;
-  }
-  else {
-    commentOffset += drop_offset;
-    drop_offset += 25;
-  }*/
   var j = 0
   var comment_ids="";
   while (j < dropList.length )
   {
     var cid = dropList.pop();
-   // var gid = record[0];
-   // var cid = record[1];
     comment_ids+= cid+",";
     j++;
   }
@@ -228,11 +216,10 @@ function QueryForDropThatStuff()
               console.log("execute.QueryForDropThatStuff had worked at once");
           }
       }
-
   })
 }
 
-//drop post consider to like policy; push
+//drop post from CheckList. add posts that contains links to dropList;
 function QueryForDelete() {
     if (checkList.length == 0)
         return;
@@ -243,11 +230,14 @@ function QueryForDelete() {
     var d = Math.floor(new Date().getTime() / 1000);
     var commentOffset = 0;
 
+    //check for comments offset
     if (comments - check_offset <= 24) {
         commentOffset = check_offset;
         check_offset = 0;
     }
     else {
+        //если каментов больше чем позволяет использовать втентакле.апи, мы возвращаем запись в список для проверки,
+        // и увеличиваем смещение для выборки каментов
         commentOffset += check_offset;
         check_offset += 24;
         checkList.push(record);
@@ -271,13 +261,13 @@ function QueryForDelete() {
             'public_id': parseInt(params.vkGroupId),
             'post_id': id+"",
             'date': parseInt(d),
-            'dropLinks': parseInt(params.dropLinks)//,
-          //  'like1': parseInt(params.likes0),
-          //  'time1': parseInt(params.likeTimes0),
-          //  'like2': parseInt(params.likes1),
-          //  'time2': parseInt(params.likeTimes1),
-          //  'like3': parseInt(params.likes2),
-          //  'time3': parseInt(params.likeTimes2)
+            'dropLinks': parseInt(params.dropLinks),
+            'like1': parseInt(params.likes0),
+            'time1': parseInt(params.likeTimes0),
+            'like2': parseInt(params.likes1),
+            'time2': parseInt(params.likeTimes1),
+            'like3': parseInt(params.likes2),
+            'time3': parseInt(params.likeTimes2)
         },
         function (o)
         {
@@ -298,12 +288,11 @@ function QueryForDelete() {
                 r.forEach(function (record) {
                     for (i = 0; i < record.length; i++)
                     {
-                       // var gid = record[0];
-                        var pid = record[0];
-                        var cid = record[1];
-                        var txt = record[2];
+                        var pid = record[0]; //post id
+                        var cid = record[1]; //comment id
+                        var txt = record[2]; //comment text
 
-                        if (spellCHeck(txt))
+                        if (params.dropLinks!=0 && spellCHeck(txt))
                         {
                             if(dropList.indexOf(cid) == -1)
                                 dropList.push(cid);
@@ -317,6 +306,7 @@ function QueryForDelete() {
     );
 }
 
+//ну оооочень простой спеллчекер :3
 function spellCHeck(text)
 {
   if(text.toString().indexOf("http") > -1)
