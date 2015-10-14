@@ -1,0 +1,128 @@
+extends layout
+//- var search = {status : 'start'}
+block content
+  h1(class='header') STATE{ #{title} }
+  form(name="form2", action=search, method="get")
+    div(class='right')
+      table
+        tr
+          td
+            b.
+              likes shortest time:
+          td
+            input(type="text", name="likeTimes0", value=likeTimes0)
+        tr
+          td
+            b.
+              likes shortest count:
+          td
+            input(type="text", name="likes0", value=likes0)
+        tr
+          td
+            b.
+              likes mid time:
+          td
+            input(type="text", name="likeTimes1", value=likeTimes1)
+        tr
+          td
+            b.
+              like mid count:
+          td
+            input(type="text", name="likes1", value=likes1)
+        tr
+          td
+            b.
+              like max time:
+          td
+            input(type="text", name="likeTimes2", value=likeTimes2)
+        tr
+          td
+            b.
+              like max count:
+          td
+            input(type="text", name="likes2", value=likes2)
+        tr
+          td
+            b.
+              timer tick time:
+          td
+            input(type="text", name="timerValue", value=timerValue)
+        tr
+          td
+            b.
+              QueryForDelete tick:
+          td
+            input(type="text", name="QueryForDelete", value=QueryForDelete)
+        tr
+          td
+            b.
+              QueryForPosts tick:
+          td
+            input(type="text", name="QueryForPosts", value=QueryForPosts)
+        tr
+          td
+            b.
+              Query Posts count:
+            td
+              input(type="text", name="PostsCount", value=PostsCount)
+        tr
+          td
+            b.
+              QueryForDropLinks tick:
+          td
+            input(type="text", name="QueryForDropThatStuff", value=QueryForDropThatStuff)
+    div(class='left')
+      table
+        tr
+          td
+            b.
+              dropLinks enabled? [0,1]
+          td
+            input(type="text", name="dropLinks", value=dropLinks,)
+        tr
+          td
+            b.
+              vkGroupId:
+          td
+            input(type="text", name="vkGroupId", value=vkGroupId)
+        tr
+          td
+            b.
+              vkAppId:
+          td
+            input(type="text", name="vkAppId", value=vkAppId)
+        tr
+          td
+            b.
+              vkAppSecret:
+          td
+            input(type="text", name="vkAppSecret", value=vkAppSecret)
+        tr
+          td
+            b.
+              vkLanguage:
+          td
+            input(type="text", name="vkLanguage", value=vkLanguage)
+        tr
+          td
+            b.
+              use https [true,false]:
+          td
+            input(type="text", name="vkHttps", value=vkHttps)
+        tr
+          td
+            b.
+              use secure connection:
+          td
+            input(type="text", name="vkSecure", value=vkSecure)
+        tr
+          td
+            b.
+              OAuthToken:
+          td
+            input(type="OAuthToken", name="OauthToken", value=OauthToken)
+
+    divdiv(class='buttons')
+      input(type="submit", name=search,value=search)
+      a(href="https://oauth.vk.com/authorize?client_id=#{vkAppId}&scope=friends,offline,wall,groups,messages&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.37&response_type=token").
+        get oauth token

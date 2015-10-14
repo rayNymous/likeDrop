@@ -1,0 +1,31 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.left{
+  position: relative;
+  background-color: azure;
+  width: 400px;
+}
+
+.right{
+  position: relative;
+  background-color: beige;
+  width: 400px;  }
+
+.buttons{
+  position: relative;
+  background-color: beige;
+  width: 400px;
+}
+
+.header
+{
+  background-color: #f15a23;
+  color: white;
+}

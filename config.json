@@ -1,0 +1,20 @@
+{
+  "likes": [ 3, 5, 10 ],
+  "likeTimes": [ 5, 10, 35 ],
+  "timerValue": 0.369,
+  "QueryForDelete": 1,
+  "QueryForPosts": 240,
+  "PostsCount":100,
+  "QueryForDropThatStuff": 15,
+  "linkCheck":1,
+
+  "dropLinks": 1,
+  "vkGroupId": -81643469,
+  "vkAppId": 4370292,
+  "vkAppSecret": "5p0zGMrEPK3HA4LQfZYq",
+  "vkLanguage": "ru",
+  "vkHttps": 1,
+  "vkSecure": 1,
+  "OauthToken": "a86d648a89dc22a3a47ef045747456a55ba30c568dcc69a103561eeb2501b0339d9e626a6f091e9c86ab2",
+  "isDebugEnabled":1
+}
