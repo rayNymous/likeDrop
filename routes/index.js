@@ -79,68 +79,67 @@ router.use('/stop/', function(req, res, next) {
 
 /*use search start */
 router.use('/start/', function(req, res, next) {
-  params=req.query;
+    params = req.query;
 
-  RUNNING=true;
-  console.log("/start state: "+ RUNNING);
+    RUNNING = true;
+    console.log("/start state: " + RUNNING);
 
-   vk = new VK({
-    'appId'     : params.vkAppId,
-    'appSecret' : params.vkAppSecret,
-    'language'  : params.vkLanguage,
-    'https' 	: (params.vkHttps  == 1),
-    'secure'    : (params.vkSecure == 1)
-  });
+    vk = new VK
+    ({
+        'appId': params.vkAppId,
+        'appSecret': params.vkAppSecret,
+        'language': params.vkLanguage,
+        'https': (params.vkHttps == 1),
+        'secure': (params.vkSecure == 1)
+    });
 
-  vk.setToken(params.OauthToken);
+    vk.setToken(params.OauthToken);
 
-  intervalID=setTimeout(vkRequest,config.timerValue);
+    intervalID = setTimeout(vkRequest, config.timerValue);
 
-  res.render('search', {
-    search:'/stop/',
-    title: 'Search IS RUNNING',
-    likes0: params.likes0,
-    likes1: params.likes1,
-    likes2: params.likes2,
-    likeTimes0: params.likeTimes0,
-    likeTimes1: params.likeTimes1,
-    likeTimes2: params.likeTimes2,
-    timerValue: params.timerValue,
-    QueryForDelete: params.QueryForDelete,
-    QueryForPosts: params.QueryForPosts,
-    PostsCount: params.PostsCount,
-    QueryForDropThatStuff: params.QueryForDropThatStuff,
-    dropLinks: params.dropLinks,
-    vkGroupId: params.vkGroupId,
-    vkAppId: params.vkAppId,
-    vkAppSecret: params.vkAppSecret,
-    vkLanguage: params.vkLanguage,
-    vkHttps: params.vkHttps,
-    vkSecure: params.vkSecure,
-    OauthToken: params.OauthToken });
-
+    res.render('search', {
+        search: '/stop/',
+        title: 'Search IS RUNNING',
+        likes0: params.likes0,
+        likes1: params.likes1,
+        likes2: params.likes2,
+        likeTimes0: params.likeTimes0,
+        likeTimes1: params.likeTimes1,
+        likeTimes2: params.likeTimes2,
+        timerValue: params.timerValue,
+        QueryForDelete: params.QueryForDelete,
+        QueryForPosts: params.QueryForPosts,
+        PostsCount: params.PostsCount,
+        QueryForDropThatStuff: params.QueryForDropThatStuff,
+        dropLinks: params.dropLinks,
+        vkGroupId: params.vkGroupId,
+        vkAppId: params.vkAppId,
+        vkAppSecret: params.vkAppSecret,
+        vkLanguage: params.vkLanguage,
+        vkHttps: params.vkHttps,
+        vkSecure: params.vkSecure,
+        OauthToken: params.OauthToken
+    });
 });
 
 //tick function
-function vkRequest()
-{
-  TimerTickNumber++;
-  if((TimerTickNumber % params.QueryForPosts)==0)
-  {
-    QueryForPosts();
-    TimerTickNumber=0;
-  }
-  else if((TimerTickNumber % params.QueryForDropThatStuff)==0)
-  {
-    QueryForDropThatStuff();
-  }
-  else if((TimerTickNumber % params.QueryForDelete)==0)
-  {
-    QueryForDelete();
-  }
+function vkRequest() {
+    if (!RUNNING)
+        return;
+    TimerTickNumber++;
+    if ((TimerTickNumber % params.QueryForPosts) == 0) {
+        QueryForPosts();
+        TimerTickNumber = 0;
+    }
+    else if ((TimerTickNumber % params.QueryForDropThatStuff) == 0) {
+        QueryForDropThatStuff();
+    }
+    else if ((TimerTickNumber % params.QueryForDelete) == 0) {
+        QueryForDelete();
+    }
 
-  clearTimeout(intervalID);
-  intervalID=setTimeout(vkRequest,config.timerValue);
+    clearTimeout(intervalID);
+    intervalID = setTimeout(vkRequest, config.timerValue);
 }
 
 //get [[post_id][post_comment_count]] from response, and push it to checkList
@@ -224,7 +223,7 @@ function QueryForDelete() {
     if (checkList.length == 0)
         return;
 
-    var record = checkList.pop();
+    var record = checkList.shift();
     var id = record[0];
     var comments = record[1];
     var d = Math.floor(new Date().getTime() / 1000);
@@ -240,7 +239,7 @@ function QueryForDelete() {
         // и увеличиваем смещение для выборки каментов
         commentOffset += check_offset;
         check_offset += 24;
-        checkList.push(record);
+        checkList.unshift(record);
     }
 
   /*  console.log("c " + commentOffset);
