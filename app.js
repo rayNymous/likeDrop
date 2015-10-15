@@ -11,7 +11,8 @@ var users = require('./routes/users');
 
 var app = express();
 
-//app.use(express.basicAuth('testUser','testPass'));
+var basicAuth = require('basic-auth-connect');
+app.use(basicAuth('admin', 'MySecurePassword001'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
