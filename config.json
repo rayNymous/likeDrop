@@ -16,5 +16,5 @@
   "vkHttps": 1,
   "vkSecure": 1,
   "OauthToken": "838c21e6eeeae9d8c5320a46303832094c121310e007bb9bbf51881ba5dad9c1bdcc07295431640c0ff16",
-  "isDebugEnabled":1
+  "isDebugEnabled": 0
 }
