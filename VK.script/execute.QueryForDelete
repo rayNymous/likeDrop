@@ -1,3 +1,15 @@
+//var POST_ID="189";// Args.post_id;
+//var OFFSET=0;//Args.offset;
+//var GROUP_ID=-81643469;//Args.public_id;
+//var DATE=1444919874;//Args.date;
+//var DROPLINKS =1;// Args.dropLiks;
+//var time1=1;
+//var like1=1;
+//var time2=2;
+//var like2=2;
+//var time3=3;
+//var like3=3;
+
 var time1=parseInt(Args.time1);
 var like1=parseInt(Args.like1);
 
@@ -24,48 +36,45 @@ var comments= API.wall.getComments({"owner_id":GROUP_ID,
 
 var items = comments.items;
 //return items;
+
 var i =0;
 while(i < items.length)
 {
     var dropped = 0;
-    if(DATE - items[i].date >= time1 * 10 &&
+    
+    if(DATE - items[i].date >= time1 * 60 &&
     items[i].likes.count < like1)
     {
         API.wall.deleteComment({"owner_id":GROUP_ID,
         "comment_id": items[i].id});
         dropped=1;
     }
-    else
+        
+    if(DATE - items[i].date >= time2 * 60 &&
+    items[i].likes.count < like2)
     {
-
-        if(DATE - items[i].date >=time2 * 10 &&
-        items[i].wall.likes.count < like2)
-        {
-            API.deleteComment({"owner_id":GROUP_ID,
-            "comment_id": items[i].id});
-            dropped=1;
-        }
-        else
-        {
-            if(DATE - items[i].date >=time3 * 10  &&
-            items[i].wall.likes.count < like3)
-            {
-                API.deleteComment({"owner_id":GROUP_ID,
-                "comment_id": items[i].id});
-                dropped=1;
-            }
-        }
+        API.wall.deleteComment({"owner_id":GROUP_ID,
+        "comment_id": items[i].id});
+        dropped=1;
     }
 
+    if(DATE - items[i].date >= time3 * 60 &&
+    items[i].likes.count < like3)
+    {
+        API.wall.deleteComment({"owner_id":GROUP_ID,
+        "comment_id": items[i].id});
+        dropped=1;
+    }
+    
     if(DROPLINKS==1 && dropped == 0)
     {
         OUT.push([POST_ID, items[i].id, items[i].text]);
     }
-
+    
     i=i+1;
 }
 
-return OUT;
+return OUT; 
 //returns list of suitable comments for text check. agree with like policy
 //output sample [['-81643469', '3', 20, 'asdffasdf'],
 //['-81643469', '3', 20, 'asdffasdf']]

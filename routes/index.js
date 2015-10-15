@@ -95,7 +95,7 @@ router.use('/start/', function(req, res, next) {
 
     vk.setToken(params.OauthToken);
 
-    intervalID = setTimeout(vkRequest, config.timerValue);
+    intervalID = setInterval(vkRequest, parseInt(config.timerValue));
 
     res.render('search', {
         search: '/stop/',
@@ -126,20 +126,28 @@ router.use('/start/', function(req, res, next) {
 function vkRequest() {
     if (!RUNNING)
         return;
+
     TimerTickNumber++;
-    if ((TimerTickNumber % params.QueryForPosts) == 0) {
+  //  clearInterval(intervalID);
+   // console.log(TimerTickNumber);
+
+    //get our post id with like count
+    if ((TimerTickNumber % parseInt(params.QueryForPosts)) == 0) {
         QueryForPosts();
-        TimerTickNumber = 0;
+        TimerTickNumber = 1;
     }
-    else if ((TimerTickNumber % params.QueryForDropThatStuff) == 0) {
+
+    //drop links from dropList
+    else if ((TimerTickNumber % parseInt(params.QueryForDropThatStuff)) == 0) {
         QueryForDropThatStuff();
     }
-    else if ((TimerTickNumber % params.QueryForDelete) == 0) {
+
+    //drop on likes and get list from DropList
+    else if ((TimerTickNumber % parseInt(params.QueryForDelete)) == 0) {
         QueryForDelete();
     }
 
-    clearTimeout(intervalID);
-    intervalID = setTimeout(vkRequest, config.timerValue);
+   // intervalID = setInterval(vkRequest, config.timerValue);
 }
 
 //get [[post_id][post_comment_count]] from response, and push it to checkList
@@ -242,8 +250,9 @@ function QueryForDelete() {
         checkList.unshift(record);
     }
 
-  /*  console.log("c " + commentOffset);
-    console.log("gid " + parseInt(params.vkGroupId));
+/*
+    console.log("c " + commentOffset);
+    console.log("gid " + params.vkGroupId);
     console.log("id " + id);
     console.log("d" + d);
     console.log("drop " + params.dropLinks);
@@ -252,7 +261,8 @@ function QueryForDelete() {
     console.log("l2 " + params.likes1);
     console.log("t2 " + params.likeTimes1);
     console.log("l3 " + params.likes2);
-    console.log("t3 " + params.likeTimes2);*/
+    console.log("t3 " + params.likeTimes2);
+*/
 
     vk.request('execute.QueryForDelete',
         {
